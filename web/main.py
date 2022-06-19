@@ -21,7 +21,7 @@ def index():
   )
 
 @app.route('/user/<name>')
-def name(name):
+def user(name):
   return render_template('user.html', user_name=name)
 
 @app.errorhandler(404)
