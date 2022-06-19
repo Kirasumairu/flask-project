@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 
+# filters: safe capitalize upper lower title trim striptags
+
 app = Flask(__name__)
 
 #@app.route('/')
@@ -8,8 +10,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return render_template('index.html')
+  first_name = 'Johnny'
+  code = '<strong>This is bolded</strong>'
+  favorite_pizza = ['Pineapple', 'Margarita']
+  return render_template(
+    'index.html',
+    first_name=first_name,
+    code=code,
+    favorite_pizza=favorite_pizza
+  )
 
 @app.route('/user/<name>')
 def name(name):
-  return "<h1>Hello {}</h1>".format(name)
+  return render_template('user.html', user_name=name)
