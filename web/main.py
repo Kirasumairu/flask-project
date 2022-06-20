@@ -54,6 +54,11 @@ class NameForm(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   submit = SubmitField()
 
+class PasswordForm(FlaskForm):
+  email = StringField('What\'s Your Email', validators=[DataRequired()])
+  password = PasswordField('What\'s Your Password')
+  submit = SubmitField('Submit')
+
 class UserForm(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
@@ -172,4 +177,32 @@ def name():
     'name.html', 
     name=name,
     form=form
+  )
+
+@app.route('/test_pw', methods=['GET', 'POST'])
+def test_pw():
+  email = None
+  password = None
+  pw_to_check = None
+  passed = None
+  user = None
+  is_correct = False
+  form = PasswordForm()
+  if form.validate_on_submit():
+    email = form.email.data
+    password = form.password.data
+
+    user = Users.query.filter_by(email=email).first()
+    is_correct = check_password_hash(user.password_hash, password)
+
+    form.email.data = ''
+    form.password.data = ''
+
+  return render_template(
+    'test_pw.html', 
+    email=email,
+    password=password,
+    form=form,
+    user=user,
+    is_correct=is_correct
   )
