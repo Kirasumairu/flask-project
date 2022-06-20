@@ -19,6 +19,10 @@
   <div class="shadow p-3 mb-5 bg-body rounded">
     <form method="POST">
       {{ form.hidden_tag() }}
+      {{ form.username.label(class='form-label') }}
+      {{ form.username(class='form-control', value=user_to_update.name) }}
+      </br>
+      {{ form.hidden_tag() }}
       {{ form.name.label(class='form-label') }}
       {{ form.name(class='form-control', value=user_to_update.name) }}
       </br>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
@@ -20,13 +21,24 @@ app.config['SECRET_KEY'] = 'supersecretkey'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+# sets user session
+@login_manager.user_loader
+def load_user(user_id):
+  return Users.query.get(int(user_id))
+
 # from the container
 # flask db init -> creates migration folder
 # flask db migration -m 'Initial migration'
 # flask db upgrade
 
-class Users(db.Model):
+# UserMixin for the flask_login
+class Users(db.Model, UserMixin):
   id = db.Column(db.Integer, primary_key=True)
+  username = db.Column(db.String(120), nullable=False, unique=True)
   name = db.Column(db.String(200), nullable=False)
   password_hash = db.Column(db.String(128))
   email = db.Column(db.String(120), nullable=False, unique=True)
@@ -63,12 +75,18 @@ class NameForm(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   submit = SubmitField()
 
+class LoginForm(FlaskForm):
+  username = StringField('Username', validators=[DataRequired()])
+  password = PasswordField('Password', validators=[DataRequired()])
+  submit = SubmitField()
+
 class PasswordForm(FlaskForm):
   email = StringField('What\'s Your Email', validators=[DataRequired()])
   password = PasswordField('What\'s Your Password')
   submit = SubmitField('Submit')
 
 class UserForm(FlaskForm):
+  username = StringField('Username', validators=[DataRequired()])
   name = StringField('Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
   password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password', message='Passwords Must Match!')])
@@ -94,6 +112,31 @@ def index():
     code=code,
     favorite_pizza=favorite_pizza
   )
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+# @login_required has to be declared before the function
+@login_required
+def dashboard():
+  return render_template('dashboard.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  form = LoginForm()
+  if form.validate_on_submit():
+    user = Users.query.filter_by(username=form.username.data).first()
+    if user and user.verify_password(form.password.data):
+      login_user(user)
+      flash('Login Successfull!')
+      return redirect(url_for('dashboard'))
+    else:
+      flash('Something went wrong... Try again')
+  return render_template('login.html', form=form)
+
+@app.route('/logout')
+def logout():
+  logout_user()
+  flash('You Have Been Logged Out!')
+  return redirect(url_for('login'))
 
 @app.route('/add-post', methods=['GET', 'POST'])
 def add_post():
@@ -178,6 +221,7 @@ def update(id):
   user_to_update = Users.query.get_or_404(id)
   if request.method == 'POST':
     user_to_update.name = request.form['name']
+    user_to_update.username = request.form['username']
     user_to_update.email = request.form['email']
     user_to_update.password = request.form['password']
     user_to_update.favorite_color = request.form['favorite_color']
@@ -224,6 +268,7 @@ def add_user():
     user = Users.query.filter_by(email=form.email.data).first()
     if user is None:
       user = Users(
+        username=form.username.data,
         name=form.name.data,
         email=form.email.data,
         favorite_color=form.favorite_color.data,
@@ -233,6 +278,7 @@ def add_user():
       db.session.commit()
     name = form.name.data
     form.name.data = ''
+    form.username.data = ''
     form.email.data = ''
     form.password.data = ''
     form.favorite_color.data = ''

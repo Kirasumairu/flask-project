@@ -1,6 +1,7 @@
 flask
 flask-wtf
 flask-sqlalchemy
+flask-login
 pymysql
 cryptography
 Flask-Migrate
