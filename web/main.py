@@ -79,6 +79,15 @@ def index():
     favorite_pizza=favorite_pizza
   )
 
+@app.route('/favorite_pizza')
+def get_favorite_pizza():
+  favorite_piza = {
+    'John': 'Pepperoni',
+    'Mary': 'Cheese'
+  }
+  return favorite_piza
+  # return {'Date': datetime.today()}
+
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
   form = UserForm()
