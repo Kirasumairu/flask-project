@@ -2,6 +2,7 @@ from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.widgets import TextArea
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -46,6 +47,14 @@ class Users(db.Model):
   def __repr__(self):
     return '<Name %r>' % self.name
 
+class Posts(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  title = db.Column(db.String(255))
+  content = db.Column(db.Text)
+  author = db.Column(db.String(255))
+  date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+  slug = db.Column(db.String(255))
+
 # from the container
 # from main import db
 # db.create_all()
@@ -67,6 +76,13 @@ class UserForm(FlaskForm):
   favorite_color = StringField('Favorite Color')
   submit = SubmitField()
 
+class PostForm(FlaskForm):
+  title = StringField('Title', validators=[DataRequired()])
+  content = StringField('Content', validators=[DataRequired()], widget=TextArea())
+  author = StringField('Author', validators=[DataRequired()])
+  slug = StringField('Slug', validators=[DataRequired()])
+  submit = SubmitField('Submit')
+
 @app.route('/')
 def index():
   first_name = 'Johnny'
@@ -78,6 +94,27 @@ def index():
     code=code,
     favorite_pizza=favorite_pizza
   )
+
+@app.route('/add-post', methods=['GET', 'POST'])
+def add_post():
+  form = PostForm()
+
+  if form.validate_on_submit():
+    post = Posts(
+      title=form.title.data,
+      content=form.content.data,
+      author=form.author.data,
+      slug=form.slug.data,
+    )
+    form.title.data = ''
+    form.content.data = ''
+    form.author.data = ''
+    form.slug.data = ''
+    db.session.add(post)
+    db.session.commit()
+
+    flash('Blog Post Submitted Successfully!')
+  return render_template('add_post.html', form=form)
 
 @app.route('/favorite_pizza')
 def get_favorite_pizza():
