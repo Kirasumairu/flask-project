@@ -5,6 +5,7 @@
       <th scope="col">Username</th>
       <th scope="col">Email</th>
       <th scope="col">Favorite Color</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +15,11 @@
         <td>{{ our_user.name }}</td>
         <td>{{ our_user.email }}</td>
         <td>{{ our_user.favorite_color }}</td>
+        <td>
+          <a class="btn btn-outline-danger" href="{{ url_for('delete', id=our_user.id)}}" role="button">
+            Delete
+          </a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
