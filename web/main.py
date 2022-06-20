@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -47,6 +47,27 @@ def index():
     first_name=first_name,
     code=code,
     favorite_pizza=favorite_pizza
+  )
+
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+  form = UserForm()
+  user_to_update = Users.query.get_or_404(id)
+  if request.method == 'POST':
+    user_to_update.name = request.form['name']
+    user_to_update.email = request.form['email']
+    try:
+      db.session.commit()
+      flash('User Updated Successfully!')
+    except:
+      flash('Error! Looks like there was a problem... Try again')
+
+  our_users = Users.query.order_by(Users.date_added)
+  return render_template(
+    'update.html',
+    our_users=our_users,
+    form=form,
+    user_to_update=user_to_update
   )
 
 @app.route('/users/add', methods=['GET', 'POST'])

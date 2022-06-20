@@ -11,19 +11,19 @@
 
 {% if name %}
 
-  <h1>User added! Hello {{ name }}</h1>
+  <h1>Update User</h1>
   </br>
 
 {% else %}
-  <h1>User List:</h1>
+  <h1>Update User</h1>
   <div class="shadow p-3 mb-5 bg-body rounded">
     <form method="POST">
       {{ form.hidden_tag() }}
       {{ form.name.label(class='form-label') }}
-      {{ form.name(class='form-control') }}
+      {{ form.name(class='form-control', value=user_to_update.name) }}
       </br>
       {{ form.email.label(class='form-label') }}
-      {{ form.email(class='form-control') }}
+      {{ form.email(class='form-control', value=user_to_update.email) }}
       </br>
       {{ form.submit(class='btn btn-primary') }}
     </form>
@@ -40,7 +40,7 @@
   <tbody>
     {% for our_user in our_users %}
       <tr>
-        <th scope="row"><a href="{{ url_for('update', id=our_user.id) }}">{{ our_user.id }}</a></th>
+        <th scope="row">{{ our_user.id }}</th>
         <td>{{ our_user.name }}</td>
         <td>{{ our_user.email }}</td>
       </tr>
