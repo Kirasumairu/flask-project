@@ -146,6 +146,23 @@ def edit_post(id):
   form.content.data = post.content
   return render_template('edit_post.html', form=form)
 
+@app.route('/posts/delete/<int:id>')
+def delete_post(id):
+  post_to_delete = Posts.query.get_or_404(id)
+  try:
+    db.session.delete(post_to_delete)
+    db.session.commit()
+    flash('Post Deleted Successfully!')
+  except:
+    flash('Error! Looks like there was a problem... Try again')
+
+  posts = Posts.query.order_by(Posts.date_posted)
+  return redirect(url_for(
+    'posts',
+    posts=posts,
+  ))
+
+
 @app.route('/favorite_pizza')
 def get_favorite_pizza():
   favorite_piza = {
