@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, PasswordField
+from wtforms.validators import DataRequired, EqualTo, Length
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -57,6 +57,8 @@ class NameForm(FlaskForm):
 class UserForm(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
+  password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password', message='Passwords Must Match!')])
+  confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])
   favorite_color = StringField('Favorite Color')
   submit = SubmitField()
 
@@ -79,6 +81,7 @@ def update(id):
   if request.method == 'POST':
     user_to_update.name = request.form['name']
     user_to_update.email = request.form['email']
+    user_to_update.password = request.form['password']
     user_to_update.favorite_color = request.form['favorite_color']
     try:
       db.session.commit()
@@ -125,13 +128,15 @@ def add_user():
       user = Users(
         name=form.name.data,
         email=form.email.data,
-        favorite_color=form.favorite_color.data
+        favorite_color=form.favorite_color.data,
+        password=form.password.data
       )
       db.session.add(user)
       db.session.commit()
     name = form.name.data
     form.name.data = ''
     form.email.data = ''
+    form.password.data = ''
     form.favorite_color.data = ''
     flash('User Added Successfully!')
   our_users = Users.query.order_by(Users.date_added)

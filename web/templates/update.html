@@ -28,6 +28,12 @@
       {{ form.favorite_color.label(class='form-label') }}
       {{ form.favorite_color(class='form-control', value=user_to_update.favorite_color) }}
       </br>
+      {{ form.password.label(class='form-label') }}
+      {{ form.password(class='form-control') }}
+      </br>
+      {{ form.confirm_password.label(class='form-label') }}
+      {{ form.confirm_password(class='form-control') }}
+      </br>
       {{ form.submit(class='btn btn-primary') }}
       <a class="btn btn-danger" href="{{ url_for('delete', id=user_to_update.id)}}" role="button">Delete</a>
     </form>
