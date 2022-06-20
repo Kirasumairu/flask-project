@@ -1,13 +1,20 @@
 version: '3'
 
 services:
+  mysql:
+    image: mysql:latest
+    hostname: mysql
+    environment:
+      - MYSQL_DATABASE=users
+      - MYSQL_ROOT_PASSWORD=password123
+
   web:
     build:
       context: .
       dockerfile: Dockerfile
     hostname: web
     command: ./web/scripts/start_web.sh
-    #command: sleep 5000
+    # command: sleep 5000
     environment:
       - FLASK_ENV=development
       - FLASK_APP=main.py
@@ -15,3 +22,7 @@ services:
       - .:/project
     ports:
       - "8000:5000"
+    links:
+      - mysql
+    depends_on:
+      - mysql
