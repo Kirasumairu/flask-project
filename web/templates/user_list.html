@@ -1,0 +1,20 @@
+<table class="table table-light">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+      <th scope="col">Favorite Color</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for our_user in our_users %}
+      <tr>
+        <th scope="row"><a href="{{ url_for('update', id=our_user.id) }}">{{ our_user.id }}</a></th>
+        <td>{{ our_user.name }}</td>
+        <td>{{ our_user.email }}</td>
+        <td>{{ our_user.favorite_color }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

@@ -2,8 +2,10 @@ from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 # filters: safe capitalize upper lower title trim striptags
 
@@ -14,11 +16,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@mysql/
 app.config['SECRET_KEY'] = 'supersecretkey'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+# from the container
+# flask db init -> creates migration folder
+# flask db migration -m 'Initial migration'
+# flask db upgrade
 
 class Users(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(200), nullable=False)
   email = db.Column(db.String(120), nullable=False, unique=True)
+  favorite_color = db.Column(db.String(120))
   date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
   def __repr__(self):
@@ -35,6 +44,7 @@ class NameForm(FlaskForm):
 class UserForm(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
+  favorite_color = StringField('Favorite Color')
   submit = SubmitField()
 
 @app.route('/')
@@ -56,6 +66,7 @@ def update(id):
   if request.method == 'POST':
     user_to_update.name = request.form['name']
     user_to_update.email = request.form['email']
+    user_to_update.favorite_color = request.form['favorite_color']
     try:
       db.session.commit()
       flash('User Updated Successfully!')
@@ -77,12 +88,17 @@ def add_user():
   if form.validate_on_submit():
     user = Users.query.filter_by(email=form.email.data).first()
     if user is None:
-      user = Users(name=form.name.data, email=form.email.data)
+      user = Users(
+        name=form.name.data,
+        email=form.email.data,
+        favorite_color=form.favorite_color.data
+      )
       db.session.add(user)
       db.session.commit()
     name = form.name.data
     form.name.data = ''
     form.email.data = ''
+    form.favorite_color.data = ''
     flash('User Added Successfully!')
   our_users = Users.query.order_by(Users.date_added)
   return render_template(
