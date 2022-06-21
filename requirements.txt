@@ -2,6 +2,7 @@ flask
 flask-wtf
 flask-sqlalchemy
 flask-login
+flask-ckeditor
 pymysql
 cryptography
 Flask-Migrate

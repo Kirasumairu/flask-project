@@ -20,10 +20,12 @@
     {{ form.slug(class='form-control') }}
     </br>
     {{ form.content.label(class='form-label') }}
-    {{ form.content(class='form-control', rows='5') }}
+    {{ form.content(class='form-control') }}
     </br>
     </br>
     {{ form.submit(class='btn btn-primary') }}
   </form>
+  {{ ckeditor.load() }}
+  {{ ckeditor.config(name='Content') }}
 </div>
 {% endblock %}

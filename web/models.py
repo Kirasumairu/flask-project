@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_ckeditor import CKEditor
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -13,6 +14,7 @@ app.config['SECRET_KEY'] = 'supersecretkey'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+ckeditor = CKEditor(app)
 
 # UserMixin for the flask_login
 class Users(db.Model, UserMixin):
