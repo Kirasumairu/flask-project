@@ -37,8 +37,11 @@ def init_post_routes():
     return render_template('post.html', post=post)
 
   @app.route('/posts/edit/<int:id>', methods=['GET','POST'])
+  @login_required
   def edit_post(id):
     post = Posts.query.get_or_404(id)
+    if post.author.id != current_user.id:
+      return render_template('401.html')
     form = PostForm()
     if form.validate_on_submit():
       post.title = form.title.data
