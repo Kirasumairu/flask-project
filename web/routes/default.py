@@ -1,9 +1,9 @@
 from flask import render_template, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user
 
-from models import app, db, Users
+from models import app, db, Users, Posts
 
-from forms import LoginForm, NameForm
+from forms import LoginForm, NameForm, SearchForm
 
 def init_default_routes():
   @app.route('/')
@@ -17,6 +17,28 @@ def init_default_routes():
       code=code,
       favorite_pizza=favorite_pizza
     )
+
+  # Important context for base templates
+  @app.context_processor
+  def base():
+    form = SearchForm()
+    return dict(form=form)
+
+  @app.route('/search', methods=['POST'])
+  def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+      term = form.search.data
+      query = f"%{term}%"
+      posts = Posts.query.filter(Posts.content.like(query)).order_by(Posts.title).all()
+      # is performing a query on db side ??
+      # posts = posts.order_by(Posts.title).all()
+      return render_template(
+        'search.html',
+        form=form,
+        term=term,
+        posts=posts
+      )
 
   @app.route('/dashboard', methods=['GET', 'POST'])
   # @login_required has to be declared before the function
