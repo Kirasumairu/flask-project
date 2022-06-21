@@ -1,4 +1,5 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
+from flask_login import login_required, current_user
 
 from models import app, db, Users
 
@@ -11,6 +12,8 @@ def init_user_routes():
 
   @app.route('/update/<int:id>', methods=['GET', 'POST'])
   def update(id):
+    if id != current_user.id:
+      return render_template('401.html')
     form = UserForm()
     user_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
@@ -34,7 +37,11 @@ def init_user_routes():
     )
 
   @app.route('/delete/<int:id>')
+  @login_required
   def delete(id):
+    if id != current_user.id:
+      return render_template('401.html')
+
     user_to_delete = Users.query.get_or_404(id)
     name = None
     form = UserForm()
