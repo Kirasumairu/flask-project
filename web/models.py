@@ -24,6 +24,8 @@ class Users(db.Model, UserMixin):
   favorite_color = db.Column(db.String(120))
   date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
+  posts = db.relationship('Posts', backref='author')
+
   @property
   def password(self):
     raise AttributeError('password is not a readable attribute!')
@@ -42,6 +44,7 @@ class Posts(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.String(255))
   content = db.Column(db.Text)
-  author = db.Column(db.String(255))
+  # author = db.Column(db.String(255))
   date_posted = db.Column(db.DateTime, default=datetime.utcnow)
   slug = db.Column(db.String(255))
+  author_id = db.Column(db.Integer, db.ForeignKey('users.id'))

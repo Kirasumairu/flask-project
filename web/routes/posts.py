@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for
+from flask_login import current_user
 
 from models import app, db, Posts
 
@@ -8,17 +9,16 @@ def init_post_routes():
   @app.route('/add-post', methods=['GET', 'POST'])
   def add_post():
     form = PostForm()
-
     if form.validate_on_submit():
+      author_id = current_user.id
       post = Posts(
         title=form.title.data,
         content=form.content.data,
-        author=form.author.data,
+        author_id=author_id,
         slug=form.slug.data,
       )
       form.title.data = ''
       form.content.data = ''
-      form.author.data = ''
       form.slug.data = ''
       db.session.add(post)
       db.session.commit()
@@ -42,7 +42,6 @@ def init_post_routes():
     form = PostForm()
     if form.validate_on_submit():
       post.title = form.title.data
-      post.author = form.author.data
       post.slug = form.slug.data
       post.content = form.content.data
       db.session.add(post)
@@ -51,7 +50,6 @@ def init_post_routes():
       return redirect(url_for('post', id=post.id))
     
     form.title.data = post.title
-    form.author.data = post.author
     form.slug.data = post.slug
     form.content.data = post.content
     return render_template('edit_post.html', form=form)
