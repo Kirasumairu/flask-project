@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from models import app, db, Posts
 
@@ -55,8 +55,11 @@ def init_post_routes():
     return render_template('edit_post.html', form=form)
 
   @app.route('/posts/delete/<int:id>')
+  @login_required
   def delete_post(id):
     post_to_delete = Posts.query.get_or_404(id)
+    if post_to_delete.author.id != current_user.id:
+      return render_template('401.html')
     try:
       db.session.delete(post_to_delete)
       db.session.commit()
