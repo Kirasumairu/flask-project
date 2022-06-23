@@ -18,6 +18,7 @@
           <strong>Username: </strong> {{ current_user.username }}</br>
           <strong>Name: </strong> {{ current_user.name }}</br>
           <strong>Email: </strong> {{ current_user.email }}</br>
+          <strong>Profile Picture: </strong> {{ current_user.profile_pic }}</br>
           <strong>Role: </strong> {{ current_user.role.role }}</br>
           <strong>Favorite Color: </strong> {{ current_user.favorite_color }}</br>
           <strong>Member Since: </strong> {{ current_user.date_added }}</br>
@@ -27,7 +28,7 @@
             style="border-radius: 100%"
             align="right"
             width="130"
-            src="https://c.tenor.com/NRISgv7urE8AAAAC/killua-zoldyck-hunter-x-hunter.gif"
+            src="{{'/static/images/'+current_user.profile_pic}}"
           >
         </div>
       </div>

@@ -11,6 +11,7 @@ app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@mysql/users'
 app.config['SECRET_KEY'] = 'supersecretkey'
+app.config['UPLOAD_FOLDER'] = 'static/images/'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -25,6 +26,7 @@ class Users(db.Model, UserMixin):
   email = db.Column(db.String(120), nullable=False, unique=True)
   favorite_color = db.Column(db.String(120))
   date_added = db.Column(db.DateTime, default=datetime.utcnow)
+  profile_pic = db.Column(db.String(128), nullable=True)
   role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), default=1)
 
   posts = db.relationship('Posts', backref='author')

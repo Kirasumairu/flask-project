@@ -17,23 +17,26 @@
 {% else %}
   <h1>Update User</h1>
   <div class="shadow p-3 mb-5 bg-body rounded">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       {{ form.hidden_tag() }}
       {{ form.username.label(class='form-label') }}
-      {{ form.username(class='form-control', value=user_to_update.name) }}
+      {{ form.username(class='form-control', value=user.name) }}
       </br>
       {{ form.hidden_tag() }}
       {{ form.name.label(class='form-label') }}
-      {{ form.name(class='form-control', value=user_to_update.name) }}
+      {{ form.name(class='form-control', value=user.name) }}
       </br>
       {{ form.email.label(class='form-label') }}
-      {{ form.email(class='form-control', value=user_to_update.email) }}
+      {{ form.email(class='form-control', value=user.email) }}
+      </br>
+      {{ form.profile_pic.label(class='form-label') }}
+      {{ form.profile_pic(class='form-control') }}
       </br>
       {{ form.role.label(class='form-label') }}
       {{ form.role(class='form-control') }}
       </br>
       {{ form.favorite_color.label(class='form-label') }}
-      {{ form.favorite_color(class='form-control', value=user_to_update.favorite_color) }}
+      {{ form.favorite_color(class='form-control', value=user.favorite_color) }}
       </br>
       {{ form.password.label(class='form-label') }}
       {{ form.password(class='form-control') }}
@@ -42,7 +45,7 @@
       {{ form.confirm_password(class='form-control') }}
       </br>
       {{ form.submit(class='btn btn-primary') }}
-      <a class="btn btn-danger" href="{{ url_for('delete', id=user_to_update.id)}}" role="button">Delete</a>
+      <a class="btn btn-danger" href="{{ url_for('delete', id=user.id)}}" role="button">Delete</a>
     </form>
   </div>
 {% endif %}

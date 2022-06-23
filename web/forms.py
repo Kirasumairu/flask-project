@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
 from flask_ckeditor import CKEditorField
 
 from wtforms import StringField, SubmitField, PasswordField, SelectField
@@ -23,6 +24,7 @@ class UserForm(FlaskForm):
   username = StringField('Username', validators=[DataRequired()])
   name = StringField('Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
+  profile_pic = FileField('Profile Picture')
   role = SelectField('Role', choices=[], validate_choice=False, coerce=int)
   password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm_password', message='Passwords Must Match!')])
   confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])

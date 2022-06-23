@@ -7,6 +7,7 @@
         <th scope="col">Username</th>
         <th scope="col">Name</th>
         <th scope="col">Email</th>
+        <th scope="col">Profile Picture</th>
         <th scope="col">Role</th>
         <th scope="col">Hashed Password</th>
         <th scope="col">Favorite Color</th>
@@ -20,6 +21,7 @@
         <td>{{ user.username }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
+        <td>{{ user.profile_pic }}</td>
         <td>{{ user.role.role }}</td>
         <td style ="word-break:break-all;">{{ user.password_hash }}</td>
         <td>{{ user.favorite_color }}</td>

@@ -17,7 +17,7 @@
 {% else %}
   <h1>User List:</h1>
   <div class="shadow p-3 mb-5 bg-body rounded">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       {{ form.hidden_tag() }}
       {{ form.username.label(class='form-label') }}
       {{ form.username(class='form-control') }}
@@ -27,6 +27,9 @@
       </br>
       {{ form.email.label(class='form-label') }}
       {{ form.email(class='form-control') }}
+      </br>
+      {{ form.profile_pic.label(class='form-label') }}
+      {{ form.profile_pic(class='form-control') }}
       </br>
       {{ form.role.label(class='form-label') }}
       {{ form.role(class='form-select') }}
