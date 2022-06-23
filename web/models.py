@@ -25,6 +25,7 @@ class Users(db.Model, UserMixin):
   email = db.Column(db.String(120), nullable=False, unique=True)
   favorite_color = db.Column(db.String(120))
   date_added = db.Column(db.DateTime, default=datetime.utcnow)
+  role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), default=1)
 
   posts = db.relationship('Posts', backref='author')
 
@@ -50,3 +51,9 @@ class Posts(db.Model):
   date_posted = db.Column(db.DateTime, default=datetime.utcnow)
   slug = db.Column(db.String(255))
   author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+class Roles(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  role = db.Column(db.String(20))
+
+  users = db.relationship('Users', backref='role')

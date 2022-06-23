@@ -29,6 +29,9 @@
       {{ form.email.label(class='form-label') }}
       {{ form.email(class='form-control', value=user_to_update.email) }}
       </br>
+      {{ form.role.label(class='form-label') }}
+      {{ form.role(class='form-control') }}
+      </br>
       {{ form.favorite_color.label(class='form-label') }}
       {{ form.favorite_color(class='form-control', value=user_to_update.favorite_color) }}
       </br>
@@ -43,5 +46,4 @@
     </form>
   </div>
 {% endif %}
-{% include 'user_list.html' %}
 {% endblock %}

@@ -28,6 +28,9 @@
       {{ form.email.label(class='form-label') }}
       {{ form.email(class='form-control') }}
       </br>
+      {{ form.role.label(class='form-label') }}
+      {{ form.role(class='form-select') }}
+      </br>
       {{ form.favorite_color.label(class='form-label') }}
       {{ form.favorite_color(class='form-control') }}
       </br>
@@ -41,5 +44,4 @@
     </form>
   </div>
 {% endif %}
-{% include 'user_list.html' %}
 {% endblock %}

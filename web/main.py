@@ -7,6 +7,7 @@ from routes.users import init_user_routes
 from routes.posts import init_post_routes
 from routes.error_handlers import init_error_routes
 from routes.default import init_default_routes
+from routes.roles import init_role_routes
 
 # filters: safe capitalize upper lower title trim striptags
 
@@ -24,3 +25,4 @@ init_user_routes()
 init_post_routes()
 init_error_routes()
 init_default_routes()
+init_role_routes()

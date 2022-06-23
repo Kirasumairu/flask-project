@@ -5,26 +5,28 @@
       <th scope="col">Username</th>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
+      <th scope="col">Role</th>
       <th scope="col">Hashed Password</th>
       <th scope="col">Favorite Color</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
-    {% for our_user in our_users %}
-      <tr>
-        <th scope="row"><a href="{{ url_for('update', id=our_user.id) }}">{{ our_user.id }}</a></th>
-        <td>{{ our_user.username }}</td>
-        <td>{{ our_user.name }}</td>
-        <td>{{ our_user.email }}</td>
-        <td>{{ our_user.password_hash }}</td>
-        <td>{{ our_user.favorite_color }}</td>
-        <td>
-          <a class="btn btn-outline-danger" href="{{ url_for('delete', id=our_user.id)}}" role="button">
-            Delete
-          </a>
-        </td>
-      </tr>
+    {% for user in users %}
+    <tr>
+      <th scope="row"><a href="{{ url_for('update', id=user.id) }}">{{ user.id }}</a></th>
+      <td>{{ user.username }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role.role }}</td>
+      <td style ="word-break:break-all;">{{ user.password_hash }}</td>
+      <td>{{ user.favorite_color }}</td>
+      <td>
+        <a class="btn btn-outline-danger" href="{{ url_for('delete', id=user.id)}}" role="button">
+          Delete
+        </a>
+      </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>

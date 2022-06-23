@@ -22,8 +22,8 @@ def init_post_routes():
       form.slug.data = ''
       db.session.add(post)
       db.session.commit()
-
       flash('Blog Post Submitted Successfully!')
+      return redirect(url_for('posts'))
     return render_template('add_post.html', form=form)
 
   @app.route('/posts')
