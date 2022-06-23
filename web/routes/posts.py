@@ -28,7 +28,7 @@ def init_post_routes():
 
   @app.route('/posts')
   def posts():
-    posts = Posts.query.order_by(Posts.date_posted)
+    posts = Posts.query.order_by(Posts.date_posted).all()
     return render_template('posts.html', posts=posts)
 
   @app.route('/posts/<int:id>')

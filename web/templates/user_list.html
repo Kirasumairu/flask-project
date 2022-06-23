@@ -1,32 +1,40 @@
-<table class="table table-light">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Username</th>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Role</th>
-      <th scope="col">Hashed Password</th>
-      <th scope="col">Favorite Color</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in users %}
-    <tr>
-      <th scope="row"><a href="{{ url_for('update', id=user.id) }}">{{ user.id }}</a></th>
-      <td>{{ user.username }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.role.role }}</td>
-      <td style ="word-break:break-all;">{{ user.password_hash }}</td>
-      <td>{{ user.favorite_color }}</td>
-      <td>
-        <a class="btn btn-outline-danger" href="{{ url_for('delete', id=user.id)}}" role="button">
-          Delete
-        </a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% if users %}
+
+  <table class="table table-light">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Username</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+        <th scope="col">Hashed Password</th>
+        <th scope="col">Favorite Color</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <th scope="row"><a href="{{ url_for('update', id=user.id) }}">{{ user.id }}</a></th>
+        <td>{{ user.username }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role.role }}</td>
+        <td style ="word-break:break-all;">{{ user.password_hash }}</td>
+        <td>{{ user.favorite_color }}</td>
+        <td>
+          <a class="btn btn-outline-danger" href="{{ url_for('delete', id=user.id)}}" role="button">
+            Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% else %}
+
+  <em>No Users Found</em>
+
+{% endif %}
