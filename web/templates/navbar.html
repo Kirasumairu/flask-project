@@ -1,7 +1,8 @@
 <nav class="py-2 bg-light border-bottom">
   <div class="container d-flex flex-wrap">
     <ul class="nav me-auto">
-      <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+      <li class="nav-item"><a href="{{ url_for('dashboard') }}" class="nav-link link-dark px-2 active">Dashboard</a></li>
+      <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link link-dark px-2 active">Home</a></li>
       <li class="nav-item"><a href="{{ url_for('name')}}" class="nav-link link-dark px-2">Name</a></li>
       {% if current_user.is_authenticated %}
         <li class="nav-item dropdown">

@@ -11,12 +11,26 @@
   <h1>User Dashboard</h1>
   <p>You Are Logged In!</p>
   <div class="shadow p-3 mb-5 bg-body rounded">
-    <h3>Welcome To Your User Dashboard!</h3>
-    <strong>Username: </strong> {{ current_user.username }}</br>
-    <strong>Name: </strong> {{ current_user.name }}</br>
-    <strong>Email: </strong> {{ current_user.email }}</br>
-    <strong>Role: </strong> {{ current_user.role.role }}</br>
-    <strong>Favorite Color: </strong> {{ current_user.favorite_color }}</br>
-    <strong>Member Since: </strong> {{ current_user.date_added }}</br>
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <h3>Welcome To Your User Dashboard!</h3>
+          <strong>Username: </strong> {{ current_user.username }}</br>
+          <strong>Name: </strong> {{ current_user.name }}</br>
+          <strong>Email: </strong> {{ current_user.email }}</br>
+          <strong>Role: </strong> {{ current_user.role.role }}</br>
+          <strong>Favorite Color: </strong> {{ current_user.favorite_color }}</br>
+          <strong>Member Since: </strong> {{ current_user.date_added }}</br>
+        </div>
+        <div class="col-4 d-flex d-flex-row justify-content-end align-items-center">
+          <img
+            style="border-radius: 100%"
+            align="right"
+            width="130"
+            src="https://c.tenor.com/NRISgv7urE8AAAAC/killua-zoldyck-hunter-x-hunter.gif"
+          >
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
