@@ -1,27 +1,41 @@
 {% if posts %}
   {% for post in posts %}
     <div class="shadow p-3 mb-5 bg-body rounded">
-      <h2>{{ post.title }}</h2>
-      <small>By: {{ post.author.name }}</br>
-      {{ post.date_posted }}</small></br></br>
-      {{ post.content | safe }}</br></br>
-      <a href="{{ url_for('post', id=post.id) }}"
-        class="btn btn-outline-primary btn-sm"
-      >
-        View Post
-      </a>
-      {% if post.author.id == current_user.id %}
-        <a href="{{ url_for('edit_post', id=post.id) }}"
-          class="btn btn-outline-primary btn-sm"
-        >
-          Edit Post
-        </a>
-        <a href="{{ url_for('delete_post', id=post.id) }}"
-          class="btn btn-outline-danger btn-sm"
-        >
-          Delete Post
-        </a>
-      {% endif %}
+      <div class="container">
+        <div class="row">
+          <div class="col-8">
+            <h2>{{ post.title }}</h2>
+            {{ post.date_posted }}</small></br></br>
+            {{ post.content | safe }}</br></br>
+            <a href="{{ url_for('post', id=post.id) }}"
+              class="btn btn-outline-primary btn-sm"
+            >
+              View Post
+            </a>
+            {% if post.author.id == current_user.id %}
+              <a href="{{ url_for('edit_post', id=post.id) }}"
+                class="btn btn-outline-primary btn-sm"
+              >
+                Edit Post
+              </a>
+              <a href="{{ url_for('delete_post', id=post.id) }}"
+                class="btn btn-outline-danger btn-sm"
+              >
+                Delete Post
+              </a>
+            {% endif %}
+          </div>
+          <div class="col-4 d-flex flex-column align-items-center">
+            <p><strong>Author:</strong> {{ post.author.name }}</p>
+            <img
+              style="border-radius: 100%"
+              class="img-thumbnail"
+              alt="profile_pic"
+              src="{{'/static/images/'+post.author.profile_pic}}"
+            >
+          </div>
+        </div>
+      </div>
     </div>
   {% endfor %}
 {% else %}
